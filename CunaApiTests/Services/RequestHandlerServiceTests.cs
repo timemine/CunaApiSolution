@@ -1,10 +1,11 @@
 ﻿using CunaApi.Interfaces;
 using CunaApi.Models;
 using CunaApi.Services;
-using System;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
+using System;
+using System.Threading.Tasks;
 
 namespace CunaApiTests.Services
 {
@@ -36,43 +37,54 @@ namespace CunaApiTests.Services
         #region InitiateRequest(ClientRequest request)
 
         [Test]
-        public void InitiateRequest_CallsThirdPartyServiceToInitiateRequest_IsSuccessful()
+        public async Task InitiateRequest_CallsThirdPartyServiceToInitiateRequest_IfSuccessful()
         {
             // Arrange 
             var clientRequest = new ClientRequest { Body = "This is the body of the request" };
 
             // Act
-            var result = _requestHandlerService.InitiateRequest(clientRequest, _appPath);
+            var result = await _requestHandlerService.InitiateRequestAsync(clientRequest, _appPath);
 
             // Assert
-            _thirdPartyService.Verify(x => x.InitiateRequest(It.IsAny<RequestCallback>()), Times.Once());
+            _thirdPartyService.Verify(x => x.InitiateRequestAsync(It.IsAny<RequestCallback>()), Times.Once());
         }
 
         [Test]
-        public void InitiateRequest_CallsRepoToStartRequest_IsSuccessful()
+        public async Task InitiateRequest_CallsRepoToStartRequest_IfSuccessful()
         {
             // Arrange 
             var clientRequest = new ClientRequest { Body = "This is the body of the request" };
 
             // Act
-            var result = _requestHandlerService.InitiateRequest(clientRequest, _appPath);
+            var result = await _requestHandlerService.InitiateRequestAsync(clientRequest, _appPath);
 
             // Assert
             _repositoryService.Verify(x => x.CreateRequest(It.IsAny<RequestStatus>()), Times.Once());
         }
 
         [Test]
-        public void InitiateRequest_ReturnsNonEmptyUniqueIdOfCreatedRequest_IsSuccessful()
+        public async Task InitiateRequest_ReturnsNonEmptyUniqueIdOfCreatedRequest_IfSuccessful()
         {
             // Arrange 
             var clientRequest = new ClientRequest { Body = "This is the body of the request" };
 
             // Act
-            var result = _requestHandlerService.InitiateRequest(clientRequest, _appPath);
+            var result = await _requestHandlerService.InitiateRequestAsync(clientRequest, _appPath);
 
             // Assert
             Assert.That(result, Is.Not.EqualTo(Guid.Empty));
             Assert.That(result, Is.TypeOf<Guid>());
+        }
+
+        [Test]
+        public void InitiateRequest_ThrowsException_IfExceptionOccursInThirdParty()
+        {
+            // Arrange 
+            var clientRequest = new ClientRequest { Body = "This is the body of the request" };
+            _thirdPartyService.Setup(x => x.InitiateRequestAsync(It.IsAny<RequestCallback>())).ThrowsAsync(new Exception());
+
+            // Act && Assert
+            Assert.That(async () => await _requestHandlerService.InitiateRequestAsync(clientRequest, _appPath), Throws.Exception);
         }
 
         #endregion InitiateRequest(ClientRequest request)

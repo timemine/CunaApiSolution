@@ -1,7 +1,9 @@
 ﻿using CunaApi.Interfaces;
-using Microsoft.Extensions.Logging;
-using System;
 using CunaApi.Models;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace CunaApi.Services
 {
@@ -10,9 +12,39 @@ namespace CunaApi.Services
     /// </summary>
     public class ThirdPartyApiService : IThirdPartyApiService
     {
-        public void InitiateRequest(RequestCallback callback)
+        private readonly IHttpClientFactory _httpClientFactory;
+
+        // By injecting the client factory this class remains unit testable
+        public ThirdPartyApiService(IHttpClientFactory httpClientFactory)
         {
-            throw new NotImplementedException();
+            _httpClientFactory = httpClientFactory;
+        }
+
+        public Task InitiateRequestAsync(RequestCallback callback)
+        {
+            var httpClient = _httpClientFactory.CreateClient(Constants.ThirdPartyClientName);
+
+            var jsonBody = new StringContent(JsonSerializer.Serialize(callback), Encoding.UTF8, "application/json");
+
+            // Would use Polly to implement a retry patttern like below. 
+            // Commented it out because the endpoint specified returns a 405 so we would keep getting an exception 
+
+            //var maxRetryAttempts = 3;
+            //var pauseBetweenFailures = TimeSpan.FromSeconds(2);
+
+            //var retryPolicy = Policy
+            //                    .Handle<HttpRequestException>()
+            //                    .WaitAndRetryAsync(maxRetryAttempts, i => pauseBetweenFailures);
+
+            //await retryPolicy.ExecuteAsync(async () =>
+            //{
+            //    var response = await httpClient.PostAsync(Constants.ThirdPartyUrl, jsonBody);
+            //    // Throws an exception if theIsSuccessStatusCode is false
+            //    response.EnsureSuccessStatusCode();
+            //});
+
+            // Just returning successful task for this exercise
+            return Task.FromResult<object>(null);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using CunaApi.Models;
+using System.Threading.Tasks;
 
 namespace CunaApi.Interfaces
 {
@@ -8,10 +9,10 @@ namespace CunaApi.Interfaces
     public interface IThirdPartyApiService
     {
         /// <summary>
-        /// Initiates a request to the third party api
+        /// Asynchronously initiates a request to the third party api
         /// </summary>
         /// <param name="callback">A <see cref="RequestCallback"/> object to relay a callback to the api.</param>
         /// <remarks>No response is expected from the call so returns void.</remarks>
-        void InitiateRequest(RequestCallback callback);
+        Task InitiateRequestAsync(RequestCallback callback);
     }
 }

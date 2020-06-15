@@ -1,5 +1,6 @@
 ﻿using System;
 using CunaApi.Models;
+using System.Threading.Tasks;
 
 namespace CunaApi.Interfaces
 {
@@ -9,12 +10,12 @@ namespace CunaApi.Interfaces
     public interface IRequestHandlerService
     {
         /// <summary>
-        /// Handles the initiation of a request
+        /// Asynchronously handles the initiation of a request
         /// </summary>
         /// <param name="request">The request to initialize</param>
         /// <param name="appUrlPath">The app url path to use for the callback</param>
         /// <returns>A <see cref="Guid"/> that is the unique identifier for the request</returns>
-        Guid InitiateRequest(ClientRequest request, string appUrlPath);
+        Task<Guid> InitiateRequestAsync(ClientRequest request, string appUrlPath);
 
         /// <summary>
         /// Sets the request as started

@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
-using CunaApi.Interfaces;
+﻿using CunaApi.Interfaces;
 using CunaApi.Models;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Threading.Tasks;
 
 namespace CunaApi.Services
 {
@@ -23,7 +24,7 @@ namespace CunaApi.Services
 
         // appUrlPath is passed in from caller for unit testing simplification and to avoid having to  
         // create an extension to access context outside of controller
-        public Guid InitiateRequest(ClientRequest request, string appUrlPath)
+        public async Task<Guid> InitiateRequestAsync(ClientRequest request, string appUrlPath)
         {
             var requestGuid = Guid.NewGuid();
             request.Id = requestGuid;
@@ -33,8 +34,15 @@ namespace CunaApi.Services
                 Body = request.Body,
                 Callback = $"{appUrlPath}/{requestGuid}"
             };
-            _thirdPartyApiService.InitiateRequest(callback);
+
+            // If there are any errors in the api service it will throw an exception so the request will not be called. 
+            // By awaiting we guarantee we won't miss the exception. There's no need for a try/catch because ApiController
+            // has built in exception handling.
+            await _thirdPartyApiService.InitiateRequestAsync(callback);
+
+            // Could easily make this method async, but that's not necessary for this
             _repositoryService.CreateRequest(new RequestStatus { Id = requestGuid, Body = request.Body, Status = Enums.Status.INITIALIZED, Detail = "Request initialized" });
+            
             return requestGuid;
         }
 

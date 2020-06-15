@@ -3,6 +3,7 @@ using CunaApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Threading.Tasks;
 
 namespace CunaApi.Controllers
 {
@@ -28,10 +29,10 @@ namespace CunaApi.Controllers
 
         // POST: /request
         [HttpPost("request")]
-        public ActionResult<string> Post([FromBody] ClientRequest request)
+        public async Task<ActionResult<string>> PostAsync([FromBody] ClientRequest request)
         {
             var appUrlPath = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
-            var requestId = _requestHandlerService.InitiateRequest(request, appUrlPath);
+            var requestId = await _requestHandlerService.InitiateRequestAsync(request, appUrlPath);
             return Ok(requestId.ToString());
         }
 

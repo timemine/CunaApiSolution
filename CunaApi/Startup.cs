@@ -1,10 +1,12 @@
 ﻿using CunaApi.Interfaces;
+using CunaApi.Models;
 using CunaApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace CunaApi
 {
@@ -32,6 +34,11 @@ namespace CunaApi
                 x.AssumeDefaultVersionWhenUnspecified = true;
                 x.ReportApiVersions = true;
             });
+
+            services.AddHttpClient(Constants.ThirdPartyClientName, c =>
+            {
+                c.BaseAddress = new Uri(Constants.ThirdPartyUrl);
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +50,8 @@ namespace CunaApi
             }
             else
             {
+                // Specify exception handling here. It's quick and easy to implement. Could implement custom exception handling
+                // at a later date without refactoring
                 app.UseExceptionHandler("/Error");
             
             }
