@@ -7,6 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CunaApi", "CunaApi\CunaApi.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CunaApiTests", "CunaApiTests\CunaApiTests.csproj", "{2598E3BA-A34A-4192-AB2D-7D3759965211}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A53F5CF8-E1C7-4209-8640-5AA8A79FCBD0}"
+	ProjectSection(SolutionItems) = preProject
+		CUNA API.postman_collection.json = CUNA API.postman_collection.json
+		README.md = README.md
+		SequenceDiagram.jpg = SequenceDiagram.jpg
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

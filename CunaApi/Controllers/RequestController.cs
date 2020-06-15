@@ -18,13 +18,11 @@ namespace CunaApi.Controllers
         // I would typically make the methods asynchronous because it's more work to implement asynchronisity later. 
         // However, because it's a small sample API I think it would be outside of the current scope.
 
-        private readonly ILogger<RequestController> _logger;
         private readonly IRequestHandlerService _requestHandlerService;
 
-        public RequestController(IRequestHandlerService requestHandlerService, ILogger<RequestController> logger)
+        public RequestController(IRequestHandlerService requestHandlerService)
         {
             _requestHandlerService = requestHandlerService;
-            _logger = logger;
         }
 
         // POST: /request

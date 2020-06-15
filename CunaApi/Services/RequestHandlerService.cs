@@ -11,6 +11,7 @@ namespace CunaApi.Services
     /// </summary>
     public class RequestHandlerService : IRequestHandlerService
     {
+        // I would want to implement logging in this layer. Probably try/catch -> log -> throw (Not throw new. Don't want to lose the callstack)
         private readonly ILogger<RequestHandlerService> _logger;
         private readonly IThirdPartyApiService _thirdPartyApiService;
         private readonly IRepositoryService _repositoryService;

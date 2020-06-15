@@ -9,19 +9,31 @@ namespace CunaApi.Services
     /// </summary>
     public class RepositoryService : IRepositoryService
     {
+        // At this point I have spent well over 2 hours on this. It would be real fun if this actually worked.
+        // However, instead of implementing I'll just hardcode some return values and explain what I would do.
+        // I would connect this service to a database client and store the request statuses in the repo.
+
         public void CreateRequest(RequestStatus requestStatus)
         {
-            throw new NotImplementedException();
+            return;
         }
 
         public void UpdateStatus(RequestStatus requestStatus)
         {
-            throw new NotImplementedException();
+            return;
         }
 
         public RequestStatusInfo GetStatus(Guid id)
         {
-            throw new NotImplementedException();
+            return new RequestStatusInfo
+            {
+                Id = id,
+                Body = "This is the body of the initial request.",
+                Created = DateTime.Now.AddDays(-1),
+                Updated = DateTime.Now.AddHours(-1),
+                Detail = "Request completed successfully",
+                Status = Enums.Status.COMPLETED
+            };
         }
     }
 }

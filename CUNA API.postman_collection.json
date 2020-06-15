@@ -1,0 +1,115 @@
+{
+	"info": {
+		"_postman_id": "965b35c2-e376-4ab1-b2dc-6bda8638c8a3",
+		"name": "CUNA API",
+		"description": "CUNA API Test calls\r\n",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Post Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"body\": \"body of the request\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:51490/request",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "51490",
+					"path": [
+						"request"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Callback",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\"ACCEPTED\"",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:51490/6c53e707-7582-4afe-9261-68eae0eb0bda",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "51490",
+					"path": [
+						"6c53e707-7582-4afe-9261-68eae0eb0bda"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Put Callback",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"status\": \"PROCESSED\",\r\n  \"detail\": \"Request was processed successfully\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:51490/6c53e707-7582-4afe-9261-68eae0eb0bda\n",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "51490",
+					"path": [
+						"6c53e707-7582-4afe-9261-68eae0eb0bda\n"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:51490/status/6c53e707-7582-4afe-9261-68eae0eb0bda",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "51490",
+					"path": [
+						"status",
+						"6c53e707-7582-4afe-9261-68eae0eb0bda"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
