@@ -30,28 +30,31 @@ namespace CunaApi.Controllers
         [HttpPost("request")]
         public ActionResult<string> Post([FromBody] ClientRequest request)
         {
-            return StatusCode(Microsoft.AspNetCore.Http.StatusCodes.Status501NotImplemented);
+            var requestId = _requestHandlerService.InitiateRequest(request);
+            return Ok(requestId.ToString());
         }
 
         // POST: /{id}
         [HttpPost("{id}")]
         public ActionResult Callback([FromRoute] Guid id)
         {
-            return StatusCode(Microsoft.AspNetCore.Http.StatusCodes.Status501NotImplemented);
+            _requestHandlerService.SetStartStatus(id);
+            return NoContent();
         }
 
         // PUT: /{id}
         [HttpPut("{id}")]
         public ActionResult Callback([FromBody] RequestStatus requestStatus)
         {
-            return StatusCode(Microsoft.AspNetCore.Http.StatusCodes.Status501NotImplemented);
+            _requestHandlerService.UpdateStatus(requestStatus);
+            return NoContent();
         }
 
         // GET: /status/{id}
         [HttpGet("status/{id}")]
         public ActionResult<RequestStatusInfo> Status([FromRoute] Guid id)
         {
-            return StatusCode(Microsoft.AspNetCore.Http.StatusCodes.Status501NotImplemented);
+            return Ok(_requestHandlerService.GetStatus(id));
         }
     }
 }
