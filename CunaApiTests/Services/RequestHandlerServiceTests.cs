@@ -17,16 +17,20 @@ namespace CunaApiTests.Services
         private RequestHandlerService _requestHandlerService;
         private Mock<IThirdPartyApiService> _thirdPartyService;
         private Mock<IRepositoryService> _repositoryService;
-        private Mock<Logger<RequestHandlerService>> _logger;
+        private ILogger<RequestHandlerService> _logger;
         private Guid _guid = new Guid("6c53e707-7582-4afe-9261-68eae0eb0bda");
+        private string _appPath = "http://www.mypath.com";
 
         [SetUp]
         public void Setup()
         {
             _thirdPartyService = new Mock<IThirdPartyApiService>();
             _repositoryService = new Mock<IRepositoryService>();
-            _logger = new Mock<Logger<RequestHandlerService>>();
-            _requestHandlerService = new RequestHandlerService(_thirdPartyService.Object, _repositoryService.Object, _logger.Object);
+
+            ILoggerFactory loggerFactory = new LoggerFactory(); ;
+            _logger = loggerFactory.CreateLogger<RequestHandlerService>();
+
+            _requestHandlerService = new RequestHandlerService(_thirdPartyService.Object, _repositoryService.Object, _logger);
         }
 
         #region InitiateRequest(ClientRequest request)
@@ -38,7 +42,7 @@ namespace CunaApiTests.Services
             var clientRequest = new ClientRequest { Body = "This is the body of the request" };
 
             // Act
-            var result = _requestHandlerService.InitiateRequest(clientRequest);
+            var result = _requestHandlerService.InitiateRequest(clientRequest, _appPath);
 
             // Assert
             _thirdPartyService.Verify(x => x.InitiateRequest(It.IsAny<RequestCallback>()), Times.Once());
@@ -51,7 +55,7 @@ namespace CunaApiTests.Services
             var clientRequest = new ClientRequest { Body = "This is the body of the request" };
 
             // Act
-            var result = _requestHandlerService.InitiateRequest(clientRequest);
+            var result = _requestHandlerService.InitiateRequest(clientRequest, _appPath);
 
             // Assert
             _repositoryService.Verify(x => x.CreateRequest(It.IsAny<RequestStatus>()), Times.Once());
@@ -64,7 +68,7 @@ namespace CunaApiTests.Services
             var clientRequest = new ClientRequest { Body = "This is the body of the request" };
 
             // Act
-            var result = _requestHandlerService.InitiateRequest(clientRequest);
+            var result = _requestHandlerService.InitiateRequest(clientRequest, _appPath);
 
             // Assert
             Assert.That(result, Is.Not.EqualTo(Guid.Empty));

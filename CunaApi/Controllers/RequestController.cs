@@ -30,7 +30,8 @@ namespace CunaApi.Controllers
         [HttpPost("request")]
         public ActionResult<string> Post([FromBody] ClientRequest request)
         {
-            var requestId = _requestHandlerService.InitiateRequest(request);
+            var appUrlPath = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}";
+            var requestId = _requestHandlerService.InitiateRequest(request, appUrlPath);
             return Ok(requestId.ToString());
         }
 

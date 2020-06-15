@@ -21,24 +21,38 @@ namespace CunaApi.Services
             _logger = logger;
         }
 
-        public Guid InitiateRequest(ClientRequest request)
+        // appUrlPath is passed in from caller for unit testing simplification and to avoid having to  
+        // create an extension to access context outside of controller
+        public Guid InitiateRequest(ClientRequest request, string appUrlPath)
         {
-            throw new NotImplementedException();
+            var requestGuid = Guid.NewGuid();
+            request.Id = requestGuid;
+            var callback = new RequestCallback
+            {
+                Id = requestGuid,
+                Body = request.Body,
+                Callback = $"{appUrlPath}/{requestGuid}"
+            };
+            _thirdPartyApiService.InitiateRequest(callback);
+            _repositoryService.CreateRequest(new RequestStatus { Id = requestGuid, Body = request.Body, Status = Enums.Status.INITIALIZED, Detail = "Request initialized" });
+            return requestGuid;
         }
 
         public void SetStartStatus(Guid id)
         {
-            throw new NotImplementedException();
+            _repositoryService.UpdateStatus(new RequestStatus { Id = id, Status = Enums.Status.STARTED, Detail = "Request started" });
+            return;
         }
 
         public void UpdateStatus(RequestStatus requestStatus)
         {
-            throw new NotImplementedException();
+            _repositoryService.UpdateStatus(requestStatus);
+            return;
         } 
 
         public RequestStatusInfo GetStatus(Guid id)
         {
-            throw new NotImplementedException();
+            return _repositoryService.GetStatus(id);
         }
     }
 }
